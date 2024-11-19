@@ -122,11 +122,22 @@
         }, 20);
       }
 
-      // 이벤트 리스너 등록
+      // 터치 이벤트 리스너 등록 (스마트폰에서 작동하도록 추가)
       const leftButton = document.getElementById("left-button");
       const rightButton = document.getElementById("right-button");
       const downButton = document.getElementById("down-button");
 
+      // 터치 시작 시 이동 시작
+      leftButton.addEventListener("touchstart", () => startMoving("left"));
+      rightButton.addEventListener("touchstart", () => startMoving("right"));
+
+      // 터치 끝나면 이동 멈춤
+      leftButton.addEventListener("touchend", stopMoving);
+      rightButton.addEventListener("touchend", stopMoving);
+      leftButton.addEventListener("touchcancel", stopMoving);
+      rightButton.addEventListener("touchcancel", stopMoving);
+
+      // 버튼에서 손가락을 떼면 이동을 멈추게 하기 위해 mouse 이벤트를 touch로 대체
       leftButton.addEventListener("mousedown", () => startMoving("left"));
       rightButton.addEventListener("mousedown", () => startMoving("right"));
       leftButton.addEventListener("mouseup", stopMoving);
@@ -134,7 +145,9 @@
       leftButton.addEventListener("mouseleave", stopMoving);
       rightButton.addEventListener("mouseleave", stopMoving);
 
-      downButton.addEventListener("mousedown", dropFishHook); // 낚시바늘 동작
+      // 낚시바늘 동작
+      downButton.addEventListener("mousedown", dropFishHook);
+      downButton.addEventListener("touchstart", dropFishHook); // 터치로도 낚시바늘 동작
     </script>
   </body>
 </html>
