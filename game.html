@@ -64,16 +64,25 @@
       const leftButton = document.getElementById("left-button");
       const rightButton = document.getElementById("right-button");
 
+      // 마우스 입력 이벤트
       leftButton.addEventListener("mousedown", () => startMoving("left"));
       rightButton.addEventListener("mousedown", () => startMoving("right"));
-
-      // 마우스를 떼면 이동 중지
       leftButton.addEventListener("mouseup", stopMoving);
       rightButton.addEventListener("mouseup", stopMoving);
-
-      // 버튼에서 커서가 벗어나도 이동 중지
       leftButton.addEventListener("mouseleave", stopMoving);
       rightButton.addEventListener("mouseleave", stopMoving);
+
+      // 터치 입력 이벤트 (모바일용)
+      leftButton.addEventListener("touchstart", (e) => {
+        e.preventDefault(); // 터치 시 기본 동작 방지
+        startMoving("left");
+      });
+      rightButton.addEventListener("touchstart", (e) => {
+        e.preventDefault();
+        startMoving("right");
+      });
+      leftButton.addEventListener("touchend", stopMoving);
+      rightButton.addEventListener("touchend", stopMoving);
     </script>
   </body>
 </html>
