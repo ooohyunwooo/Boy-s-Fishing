@@ -116,8 +116,15 @@
         const liftInterval = setInterval(() => {
           currentTop -= 5; // 낚시바늘 올라감
           fishHook.style.top = currentTop + "px";
+
+          // 올라가는 동안 가운데 버튼 비활성화
+          downButton.disabled = true; // 버튼 비활성화
+
           if (currentTop <= initialTop) {
+            currentTop = initialTop; // 초기 위치로 정확하게 설정
+            fishHook.style.top = currentTop + "px"; // 정확한 위치로 이동
             clearInterval(liftInterval); // 초기 위치로 돌아오면 정지
+            downButton.disabled = false; // 버튼 활성화
           }
         }, 20);
       }
