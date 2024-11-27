@@ -1,0 +1,372 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>상점</title>
+    <style>
+        @font-face {
+            font-family: 'NeoDGM';
+            src: url('./neodgm.ttf') format('truetype');
+            font-weight: normal;
+            font-style: normal;
+        }
+
+        body,
+        html {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background-image: url("StartBackground.png");
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            overflow: hidden;
+            font-family: "NeoDGM", sans-serif;
+        }
+
+        .aspect-ratio-box {
+            background-image: url('shop.png');
+            background-size: cover;
+            background-position: center;
+            width: 100%;
+            max-width: 600px;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 20px;
+            box-sizing: border-box;
+        }
+
+        .header {
+            width: 100%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .header h2 {
+            font-size: 32px;
+            color: white;
+            margin: 0;
+        }
+
+        .gold-display {
+            color: yellow;
+            font-size: 24px;
+            font-weight: bold;
+            margin-bottom: 20px;
+        }
+
+        .back-button {
+            background-color: #4caf50;
+            color: white;
+            padding: 12px 20px;
+            border: none;
+            border-radius: 12px;
+            cursor: pointer;
+            font-size: 20px;
+            font-family: 'NeoDGM', sans-serif;
+            transition: background-color 0.3s;
+        }
+
+        .back-button:hover {
+            background-color: #45a049;
+        }
+
+        .button-container {
+            display: flex;
+            flex-direction: column;
+            gap: 30px;
+            margin-top: 40px;
+        }
+
+        .button {
+            padding: 25px 40px;
+            font-size: 28px;
+            font-weight: bold;
+            color: white;
+            background-color: #4caf50;
+            border: none;
+            border-radius: 20px;
+            cursor: pointer;
+            text-align: center;
+            width: 250px;
+            font-family: 'NeoDGM', sans-serif;
+            transition: background-color 0.3s;
+        }
+
+        .button:hover {
+            background-color: #45a049;
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        .carousel {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            width: 100%;
+            margin-top: 30px;
+        }
+
+        .image-placeholder {
+            width: 280px;
+            height: 180px;
+            background-color: #d3d3d3;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 16px;
+            color: #555;
+            border: 1px solid #ccc;
+        }
+
+        .description {
+            margin-top: 20px;
+            font-size: 22px;
+            text-align: center;
+            color: white;
+        }
+
+        .buy-button {
+            background-color: #4caf50;
+            color: white;
+            padding: 12px 24px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 18px;
+            font-family: 'NeoDGM', sans-serif;
+            transition: background-color 0.3s;
+        }
+
+        .buy-button.sold-out {
+            background-color: #d3d3d3;
+            cursor: not-allowed;
+        }
+
+        .buy-button:hover:not(.sold-out) {
+            background-color: #45a049;
+        }
+
+        img {
+            max-width: 100%;
+            max-height: 100%;
+        }
+    </style>
+</head>
+<body>
+    <div class="aspect-ratio-box" id="shop">
+        <div class="header">
+            <h2>상점창</h2>
+            <button class="back-button" onclick="goBackToIndex()">뒤로가기</button>
+        </div>
+        <div class="gold-display">보유 골드: <span id="currentBalance">0</span></div>
+        <div class="button-container">
+            <button class="button" onclick="showSection('boats')">배</button>
+            <button class="button" onclick="showSection('rods')">낚시대</button>
+        </div>
+    </div>
+
+    <div class="aspect-ratio-box hidden" id="boats">
+        <div class="header">
+            <h2>배</h2>
+            <button class="back-button" onclick="showSection('shop')">뒤로가기</button>
+        </div>
+        <div class="gold-display">보유 골드: <span id="currentBalanceBoats">0</span></div>
+        <div class="carousel">
+            <button onclick="prevBoat()">&#60;</button>
+            <div class="image-placeholder" id="boatImageContainer">
+                <img id="boatImage" src="" alt="배 이미지">
+            </div>
+            <button onclick="nextBoat()">&#62;</button>
+        </div>
+        <div class="description" id="boatDescription">설명: 기본 배</div>
+        <button class="buy-button" id="buyBoatButton" onclick="buyBoat()">300000</button>
+    </div>
+
+    <div class="aspect-ratio-box hidden" id="rods">
+        <div class="header">
+            <h2>낚시대</h2>
+            <button class="back-button" onclick="showSection('shop')">뒤로가기</button>
+        </div>
+        <div class="gold-display">보유 골드: <span id="currentBalanceRods">0</span></div>
+        <div class="carousel">
+            <button onclick="prevRod()">&#60;</button>
+            <div class="image-placeholder" id="rodImageContainer">
+                <img id="rodImage" src="" alt="낚시대 이미지">
+            </div>
+            <button onclick="nextRod()">&#62;</button>
+        </div>
+        <div class="description" id="rodDescription">설명: 기본 낚시대</div>
+        <button class="buy-button" id="buyRodButton" onclick="buyRod()">10000</button>
+    </div>
+
+    <script>
+        function initializeCoins() {
+            if (!localStorage.getItem('coins')) {
+                localStorage.setItem('coins', 0); // 초기 코인 0으로 설정
+            }
+        }
+
+        function getCoins() {
+            return parseInt(localStorage.getItem('coins') || 0);
+        }
+
+        function setCoins(amount) {
+            localStorage.setItem('coins', amount);
+        }
+
+        function updateCoinsUI() {
+            const coins = getCoins();
+            document.querySelectorAll('.gold-display span').forEach(el => {
+                el.innerText = coins;
+            });
+        }
+
+        initializeCoins(); // 코인 초기화
+
+        const boats = [
+            { name: '기본 배', description: '배의 이동 속도 1단계, 좌우 전환 1단계', price: 300000, image: 'shopboat1.png', sold: false },
+            { name: '중급 배', description: '배의 이동 속도 2단계, 좌우 전환 2단계', price: 500000, image: 'shopboat2.png', sold: false },
+            { name: '고급 배', description: '배의 이동 속도 3단계, 좌우 전환 3단계', price: 1000000, image: 'shopboat3.png', sold: false }
+        ];
+
+        const rods = [
+            { name: '기본 낚시대', description: '낚시 줄이 내려가는 최대 깊이 1단계', price: 10000, image: 'shopstick1.png', sold: false },
+            { name: '중급 낚시대', description: '낚시 줄이 내려가는 최대 깊이 2단계', price: 50000, image: 'shopstick2.png', sold: false },
+            { name: '고급 낚시대', description: '낚시 줄이 내려가는 최대 깊이 3단계', price: 100000, image: 'shopstick3.png', sold: false }
+        ];
+
+        let currentBoatIndex = 0;
+        let currentRodIndex = 0;
+
+        function showSection(sectionId) {
+            document.querySelectorAll('.aspect-ratio-box').forEach(section => {
+                section.classList.add('hidden');
+            });
+            document.getElementById(sectionId).classList.remove('hidden');
+            updateCoinsUI();
+        }
+
+        function buyBoat() {
+            const coins = getCoins();
+            const boat = boats[currentBoatIndex];
+            if (coins >= boat.price && !boat.sold) {
+                setCoins(coins - boat.price);
+                boat.sold = true;
+                alert(`${boat.description}을(를) 구매하였습니다.`);
+                updateCoinsUI();
+                updateBoat();
+            } else if (boat.sold) {
+                alert('이미 구매한 항목입니다.');
+            } else {
+                alert('잔액이 부족합니다.');
+            }
+        }
+
+        function buyRod() {
+            const coins = getCoins();
+            const rod = rods[currentRodIndex];
+            if (coins >= rod.price && !rod.sold) {
+                setCoins(coins - rod.price);
+                rod.sold = true;
+                alert(`${rod.description}을(를) 구매하였습니다.`);
+                updateCoinsUI();
+                updateRod();
+            } else if (rod.sold) {
+                alert('이미 구매한 항목입니다.');
+            } else {
+                alert('잔액이 부족합니다.');
+            }
+        }
+
+        // 낚시대 UI 업데이트 함수
+        function updateRod() {
+            const rod = rods[currentRodIndex];
+            document.getElementById('rodDescription').innerText = `설명: ${rod.description}`;
+            document.getElementById('rodImage').src = rod.image;
+            document.getElementById('buyRodButton').innerText = rod.price;
+
+            const buyButton = document.getElementById('buyRodButton');
+            if (rod.sold) {
+                buyButton.classList.add('sold-out');
+                buyButton.innerText = '품절';
+                buyButton.disabled = true;
+            } else {
+                buyButton.classList.remove('sold-out');
+                buyButton.disabled = false;
+            }
+        }
+
+        function prevRod() {
+            if (currentRodIndex > 0) {
+                currentRodIndex--;
+                updateRod();
+            }
+        }
+
+        function nextRod() {
+            if (currentRodIndex < rods.length - 1) {
+                currentRodIndex++;
+                updateRod();
+            }
+        }
+
+
+        // 배 UI 업데이트 함수
+        function updateBoat() {
+            const boat = boats[currentBoatIndex];
+            document.getElementById('boatDescription').innerText = `설명: ${boat.description}`;
+            document.getElementById('boatImage').src = boat.image;
+            document.getElementById('buyBoatButton').innerText = `${boat.price}`;
+
+            const buyButton = document.getElementById('buyBoatButton');
+            if (boat.sold) {
+                buyButton.classList.add('sold-out');
+                buyButton.innerText = '품절';
+                buyButton.disabled = true;
+            } else {
+                buyButton.classList.remove('sold-out');
+                buyButton.disabled = false;
+            }
+        }
+
+        function prevBoat() {
+            if (currentBoatIndex > 0) {
+                currentBoatIndex--;
+                updateBoat();
+            }
+        }
+
+        function nextBoat() {
+            if (currentBoatIndex < boats.length - 1) {
+                currentBoatIndex++;
+                updateBoat();
+            }
+        }
+
+
+        function addCoins(amount) {
+            const coins = getCoins();
+            setCoins(coins + amount);
+            updateCoinsUI();
+        }
+
+        function goBackToIndex() {
+            window.location.href = 'index.html';
+        }
+
+        updateCoinsUI();
+        updateBoat(); // 배 초기화
+        updateRod(); // 낚시대 초기화
+    </script>
+</body>
+</html>
