@@ -83,6 +83,41 @@
       canvas.width = window.innerWidth;
       canvas.height = window.innerHeight;
 
+      // 초기화 및 애니메이션 루프 시작
+      requestAnimationFrame(animationLoop);
+
+      function animationLoop() {
+        // 캔버스 초기화
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+        // 낚시줄 그리기
+        drawFishingLine();
+
+        // 다음 프레임 요청
+        requestAnimationFrame(animationLoop);
+      }
+
+      // 낚시줄 그리기 함수
+      function drawFishingLine() {
+        // 낚시줄 시작점 (캐릭터 중심 위치)
+        const characterRect = characterContainer.getBoundingClientRect();
+        const hookRect = fishHook.getBoundingClientRect();
+
+        // 낚시줄의 시작점과 끝점 좌표
+        const startX = characterRect.left + characterRect.width / 2;
+        const startY = characterRect.top;
+        const endX = hookRect.left + hookRect.width / 2;
+        const endY = hookRect.top;
+
+        // 낚시줄 그리기
+        ctx.beginPath();
+        ctx.moveTo(startX, startY);
+        ctx.lineTo(endX, endY);
+        ctx.strokeStyle = "black"; // 낚시줄 색상
+        ctx.lineWidth = 2; // 낚시줄 두께
+        ctx.stroke();
+      }
+
       // 캐릭터와 낚시바늘 이동 함수
       function moveCharacter(direction) {
         if (direction === "left") {
@@ -120,6 +155,7 @@
           currentTop += 5; // 낚시바늘 내려감
           hookPosition.y = currentTop;
           fishHook.style.top = currentTop + "px";
+
           if (currentTop >= initialTop + dropDistance) {
             clearInterval(dropInterval); // 목표 거리 도달 시 정지
             liftFishHook(initialTop); // 낚시바늘 올리기
