@@ -4,25 +4,13 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>보이스피싱</title>
+
     <script src="common.js"></script>
     <script>
-      window.onload = loadPlayerData;
-    </script>
-    <script src="libs/jquery-3.7.1.js"></script>
-    <script>
-      const params = new URLSearchParams(window.location.search);
-      const gold = parseInt(params.get("gold"));
-      const ship = parseInt(params.get("ship"));
-      const fishingRod = parseInt(params.get("fishingRod"));
-
-      document.body.innerHTML = `골드: ${gold}, 선박레벨: ${ship}, 낚시대: ${fishingRod}`;
-
-      function go_to_shop(gold, ship, fishingRod) {
-        // 변수들을 포함하여 URL 생성
-        const url = "shop.html";
-        //const url = 'http://117.16.44.109/~g_202311126/shopTemp?gold=${gold}&ship=${ship}&fishingRod=${fishingRod}';
-        window.location.href = url; // 페이지 이동
-      }
+      // 페이지 로드 시 플레이어 데이터 로드
+      window.onload = () => {
+        loadPlayerData(); // common.js에서 제공하는 데이터 로드 함수 호출
+      };
     </script>
 
     <style>
@@ -133,14 +121,13 @@
       <div class="content">
         <!-- 하단 버튼 -->
         <div class="button-container">
-          <button class="button" onclick="go_to_shop(0,1,1)">상점</button>
+          <button class="button" onclick="window.location.href='shop.html'">
+            상점
+          </button>
           <button class="button" onclick="window.location.href='game.html'">
             플레이
           </button>
-          <button
-            class="button"
-            onclick="window.location.href='http://117.16.44.109/~g_202311126'"
-          >
+          <button class="button" onclick="window.location.href='tutorial.html'">
             튜토리얼
           </button>
         </div>
