@@ -18,20 +18,20 @@
       const boats = [
         {
           name: "기본 배",
-          description: "배의 이동 속도 1단계",
-          price: 300000,
+          description: "배의 이동 속도 낮음",
+          price: 30000,
           image: "images/shopboat1.png",
         },
         {
           name: "중급 배",
-          description: "배의 이동 속도 2단계",
-          price: 500000,
+          description: "배의 이동 속도 보통",
+          price: 50000,
           image: "images/shopboat2.png",
         },
         {
           name: "고급 배",
-          description: "배의 이동 속도 3단계",
-          price: 1000000,
+          description: "배의 이동 속도 빠름",
+          price: 100000,
           image: "images/shopboat3.png",
         },
       ];
@@ -39,19 +39,19 @@
       const rods = [
         {
           name: "기본 낚시대",
-          description: "낚시 줄이 내려가는 최대 깊이 1단계",
+          description: "얕은 수심에서 낚시 가능",
           price: 10000,
           image: "images/shopstick1.png",
         },
         {
           name: "중급 낚시대",
-          description: "낚시 줄이 내려가는 최대 깊이 2단계",
+          description: "보통 수심에서 낚시 가능",
           price: 50000,
           image: "images/shopstick2.png",
         },
         {
           name: "고급 낚시대",
-          description: "낚시 줄이 내려가는 최대 깊이 3단계",
+          description: "깊은 수심까지 낚시 가능",
           price: 100000,
           image: "images/shopstick3.png",
         },
@@ -72,6 +72,14 @@
         });
         document.getElementById(sectionId).classList.remove("hidden");
         updateCoinsUI(); // 섹션을 변경할 때마다 UI 업데이트
+        // 배와 낚시대 초기화
+        if (sectionId === "boats") {
+          currentBoatIndex = 0; // 기본 배 인덱스 설정
+          updateBoat(); // 기본 배 정보 표시
+        } else if (sectionId === "rods") {
+          currentRodIndex = 0; // 기본 낚시대 인덱스 설정
+          updateRod(); // 기본 낚시대 정보 표시
+        }
       }
 
       function updateCoinsUI() {
